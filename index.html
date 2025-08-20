@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💪 Rutini</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .header {
+            background: linear-gradient(-90deg, #ff6b35 0%, #f7931e 100%);
+            color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .day-selector {
+            background: #2a2a2a;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        .day-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .day-btn {
+            padding: 9px 12px;
+            border: none;
+            border-radius: 8px;
+            background: #444;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .day-btn.active {
+            background: linear-gradient(-90deg, #ff6b35, #f7931e);
+            color: #1a1a1a;
+        }
+
+        .day-btn:hover {
+            background: #555;
+        }
+
+        .day-btn.active:hover {
+            background: linear-gradient(-90deg, #f7931e, #ff6b35);
+        }
+
+        .controls {
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            min-width: 70px;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border-left: 5px solid #ff6b35;
+            background: #333;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 2px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid #666;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(-90deg, #ff6b35, #f7931e);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .table-container {
+            background: #2a2a2a;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #ff6b35;
+            color: #1a1a1a;
+            padding: 15px 12px;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+            vertical-align: middle;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        tr:hover {
+            background-color: #333;
+        }
+
+        .exercise-name {
+            font-weight: 500;
+            color: #ffffff;
+            line-height: 1.4;
+            text-align: left;
+            min-width: 100px;
+        }
+
+        .exercise-name div{
+            min-width: 180px;
+        }
+
+        .muscle-group {
+            background: #333 !important;
+            font-weight: bold;
+            color: #ff6b35;
+            border-left: 4px solid #ff6b35;
+            text-align: left !important;
+        }
+
+        .completed-exercise {
+            background-color: #2d4d2d;
+            opacity: 0.8;
+        }
+
+        .completed-exercise .exercise-name {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: column;
+            gap: 5px;
+            max-width: 30px;
+        }
+
+        .counter-btn {
+            background: #ff6b35;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .counter-btn:hover {
+            background: #f7931e;
+        }
+
+        .counter-display {
+            font-weight: bold;
+            font-size: 1.2em;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transform: scale(1.2);
+            accent-color: #ff6b35;
+            position: relative;
+            right: 30px;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            .counter-controls {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .notes-input {
+                width: 150px;
+            }
+
+            th,
+            td {
+                padding: 8px 4px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>💪 Rutini Tracker</h1>
+        <p>Contador de Series y Repeticiones</p>
+    </div>
+
+    <div class="day-selector">
+        <h3 style="margin: 12px auto;">Selecciona tu día de entrenamiento</h3>
+        <div class="day-buttons">
+            <button class="day-btn" onclick="selectDay('lunes')">🔥 LUN</button>
+            <button class="day-btn" onclick="selectDay('miercoles')">💪 MIÉR</button>
+            <button class="day-btn" onclick="selectDay('jueves')">🦵 JUEV</button>
+        </div>
+    </div>
+
+    <div class="controls" id="controls" style="display: none;">
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalExercises">0</div>
+                <div class="stat-label"> Totales </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completedExercises">0</div>
+                <div class="stat-label"> Listos </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="remainingExercises">0</div>
+                <div class="stat-label"> Faltan </div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <button class="reset-btn" onclick="resetDay()">🔄 Resetear Día Actual</button>
+    </div>
+
+    <div class="table-container" id="tableContainer" style="display: none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ejercicio</th>
+                    <th>Series</th>
+                    <th>Repeticiones</th>
+                    <th>✅</th>
+                </tr>
+            </thead>
+            <tbody id="exerciseTableBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const workoutData = {
+            lunes: [
+                {
+                    muscle: "PECHO, HOMBROS Y TRÍCEPS", exercises: [
+                        {
+                            name: "Aperturas con mancuerna (pecho superior)",
+                            muscle: "Pecho",
+                            description: "Acostado en banco inclinado, brazos extendidos con mancuernas, baja en arco amplio y sube juntando las mancuernas arriba"
+                        },
+                        {
+                            name: "Press inclinado (pecho superior)",
+                            muscle: "Pecho",
+                            description: "En banco inclinado 30-45°, empuja la barra/mancuernas desde el pecho hacia arriba"
+                        },
+                        {
+                            name: "Flexiones",
+                            muscle: "Pecho",
+                            description: "Posición plancha, baja el pecho al suelo y empuja hacia arriba"
+                        },
+                        {
+                            name: "Press plano horizontal (pecho medio)",
+                            muscle: "Pecho",
+                            description: "Acostado horizontal, baja la barra al pecho y empuja hacia arriba"
+                        },
+                        {
+                            name: "Press militar",
+                            muscle: "Hombros",
+                            description: "De pie, empuja barra/mancuernas desde los hombros hacia arriba"
+                        },
+                        {
+                            name: "Elevaciones laterales con mancuerna",
+                            muscle: "Hombros",
+                            description: "Brazos a los lados, eleva mancuernas hasta altura de hombros"
+                        },
+                        {
+                            name: "Trícep en polea",
+                            muscle: "Tríceps",
+                            description: "Frente a polea alta, empuja la cuerda/barra hacia abajo extendiendo los brazos"
+                        },
+                        {
+                            name: "Jalón al pecho agarre prono",
+                            muscle: "Espalda",
+                            description: "Sentado en máquina, jala la barra hacia el pecho con agarre amplio"
+                        },
+                        {
+                            name: "Remo unilateral supino en banco",
+                            muscle: "Espalda",
+                            description: "Una mano apoyada en banco, jala mancuerna hacia la cadera"
+                        }
+                    ]
+                },
+            ],
+            miercoles: [
+                {
+                    muscle: "ESPALDA, BÍCEPS Y POSTERIORES", exercises: [
+                        {
+                            name: "Jalón al pecho (agarre medio)",
+                            muscle: "Espalda",
+                            description: "Sentado en máquina, jala la barra hacia el pecho con agarre amplio"
+                        },
+                        {
+                            name: "Remo agarre ancho (espalda alta)",
+                            muscle: "Espalda",
+                            description: "Inclinado hacia adelante, jala la barra hacia el abdomen con agarre amplio"
+                        },
+                        {
+                            name: "Pull over polea alta (espalda media)",
+                            muscle: "Espalda",
+                            description: "De pie frente a polea alta, brazos extendidos, jala hacia abajo manteniendo brazos rectos"
+                        },
+                        {
+                            name: "Extensión de lumbar (espalda baja)",
+                            muscle: "Espalda",
+                            description: "En banco romano, flexiona y extiende el torso trabajando la espalda baja"
+                        },
+                        {
+                            name: "Curl Bayesiano o parado con mancuerna",
+                            muscle: "Bíceps",
+                            description: "Recostado en banco inclinado, curl de bíceps con brazos colgando"
+                        },
+                        {
+                            name: "Curl martillo (bícep braquial)",
+                            muscle: "Bíceps",
+                            description: "Curl con agarre neutro (palmas enfrentadas)"
+                        },
+                        {
+                            name: "Curl banco Scott (bícep bajo)",
+                            muscle: "Bíceps",
+                            description: "En banco predicador, curl concentrado"
+                        },
+                        {
+                            name: "Elevaciones laterales con mancuerna",
+                            muscle: "Hombros",
+                            description: "Brazos a los lados, eleva mancuernas hasta altura de hombros"
+                        },
+                        {
+                            name: "Posteriores (elevaciones posteriores)",
+                            muscle: "Hombros",
+                            description: "Inclinado hacia adelante, abre los brazos hacia atrás con mancuernas"
+                        }
+                    ]
+                },
+            ],
+            jueves: [
+                {
+                    muscle: "PIERNAS Y GLÚTEOS", exercises: [
+                        {
+                            name: "Extensión de cuádriceps",
+                            muscle: "Cuádriceps",
+                            description: "Sentado en máquina, extiende las piernas hacia arriba"
+                        },
+                        {
+                            name: "Sentadilla Jaka",
+                            muscle: "Piernas",
+                            description: "Sentadilla con barra en posición alta"
+                        },
+                        {
+                            name: "Prensa inclinada",
+                            muscle: "Piernas",
+                            description: "En máquina de prensa, empuja el peso con las piernas"
+                        },
+                        {
+                            name: "Peso muerto rumano",
+                            muscle: "Glúteos/Femorales",
+                            description: "Con barra, baja flexionando cadera manteniendo piernas semi-flexionadas"
+                        },
+                        {
+                            name: "Hip thrust",
+                            muscle: "Glúteos",
+                            description: "Acostado con espalda en banco, empuja cadera hacia arriba con peso"
+                        },
+                        {
+                            name: "Extensión femoral",
+                            muscle: "Femorales",
+                            description: "Acostado boca abajo, flexiona piernas hacia glúteos"
+                        },
+                        {
+                            name: "Gemelo de pie en máquina",
+                            muscle: "Gemelos",
+                            description: "En máquina, elévate sobre puntas de pies"
+                        },
+                        {
+                            name: "Sentadilla Smith",
+                            muscle: "Piernas",
+                            description: "Sentadilla guiada en máquina Smith"
+                        }
+                    ]
+                },
+            ]
+        };
+
+        let currentDay = null;
+        let exerciseData = [];
+
+        function selectDay(day) {
+            currentDay = day;
+
+            // Update button states
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show controls and table
+            document.getElementById('controls').style.display = 'block';
+            document.getElementById('tableContainer').style.display = 'block';
+
+            initializeExercises();
+            renderTable();
+            updateStats();
+        }
+
+        function initializeExercises() {
+            exerciseData = [];
+            let exerciseId = 1;
+
+            workoutData[currentDay].forEach(muscleGroup => {
+                // Add muscle group header
+                exerciseData.push({
+                    id: `muscle-${muscleGroup.muscle}`,
+                    muscle: muscleGroup.muscle,
+                    exercise: '',
+                    isMuscleGroup: true,
+                    series: 0,
+                    reps: 0,
+                    completed: false,
+                    notes: ''
+                });
+
+                // Add exercises
+                muscleGroup.exercises.forEach(exercise => {
+                    exerciseData.push({
+                        id: `exercise-${exerciseId}`,
+                        muscle: exercise.muscle,
+                        exercise: exercise.name,
+                        description: exercise.description,
+                        isMuscleGroup: false,
+                        series: 0,
+                        reps: 0,
+                        completed: false,
+                        notes: ''
+                    });
+                    exerciseId++;
+                });
+            });
+
+            loadSavedData();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('exerciseTableBody');
+            tbody.innerHTML = '';
+
+            exerciseData.forEach(item => {
+                const row = document.createElement('tr');
+
+                if (item.isMuscleGroup) {
+                    row.className = 'muscle-group';
+                    row.innerHTML = `
+                <td colspan="6">${item.muscle}</td>
+            `;
+                } else {
+                    row.className = item.completed ? 'completed-exercise' : '';
+                    const descriptionId = `desc-${item.id}`;
+
+                    row.innerHTML = `
+                <td class="exercise-name">
+                    <div>
+                        <span class="exercise-title" onclick="toggleDescription('${descriptionId}')" style="cursor: pointer; color: #ff6b35;">
+                            ${item.exercise} 📋
+                        </span>
+                        <div id="${descriptionId}" class="exercise-description" style="display: none; margin-top: 5px; padding: 8px; background: #333; border-radius: 4px; font-size: 0.9em; color: #ccc; border-left: 3px solid #ff6b35;">
+                            <b>${item.muscle.toUpperCase()}</b> - ${item.description}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="counter-controls">
+                        <button class="counter-btn" onclick="changeSeries('${item.id}', -1)">-</button>
+                        <span class="counter-display">${item.series}</span>
+                        <button class="counter-btn" onclick="changeSeries('${item.id}', 1)">+</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="counter-controls">
+                        <button class="counter-btn" onclick="changeReps('${item.id}', -1)">-</button>
+                        <span class="counter-display">${item.reps}</span>
+                        <button class="counter-btn" onclick="changeReps('${item.id}', 1)">+</button>
+                    </div>
+                </td>
+                <td>
+                    <input type="checkbox" class="checkbox" 
+                           ${item.completed ? 'checked' : ''} 
+                           onchange="toggleCompleted('${item.id}')">
+                </td>
+            `;
+                }
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function toggleDescription(descriptionId) {
+            const descElement = document.getElementById(descriptionId);
+            if (descElement) descElement.style.display = descElement.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function changeSeries(id, change) {
+            const item = exerciseData.find(e => e.id === id);
+            if (item) {
+                item.series = Math.max(0, item.series + change);
+                saveData();
+                renderTable();
+            }
+        }
+
+        function changeReps(id, change) {
+            const item = exerciseData.find(e => e.id === id);
+            if (item) {
+                item.reps = Math.max(0, item.reps + change);
+                saveData();
+                renderTable();
+            }
+        }
+
+        function toggleCompleted(id) {
+            const item = exerciseData.find(e => e.id === id);
+            if (item) {
+                item.completed = !item.completed;
+                saveData();
+                renderTable();
+                updateStats();
+            }
+        }
+
+        function updateStats() {
+            if (!currentDay) return;
+
+            const exercises = exerciseData.filter(e => !e.isMuscleGroup);
+            const totalExercises = exercises.length;
+            const completedExercises = exercises.filter(e => e.completed).length;
+            const remainingExercises = totalExercises - completedExercises;
+            const progressPercentage = totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0;
+
+            document.getElementById('totalExercises').textContent = totalExercises;
+            document.getElementById('completedExercises').textContent = completedExercises;
+            document.getElementById('remainingExercises').textContent = remainingExercises;
+            document.getElementById('currentDay').textContent = currentDay.toUpperCase();
+            document.getElementById('progressFill').style.width = progressPercentage + '%';
+        }
+
+        function resetDay() {
+            if (!currentDay || !confirm('¿Estás seguro de que quieres resetear todos los datos del día actual?')) {
+                return;
+            }
+
+            exerciseData.forEach(item => {
+                if (!item.isMuscleGroup) {
+                    item.series = 0;
+                    item.reps = 0;
+                    item.completed = false;
+                    item.notes = '';
+                }
+            });
+
+            saveData();
+            renderTable();
+            updateStats();
+        }
+
+        function saveData() {
+            if (!currentDay) return;
+            const dataKey = `gymRoutine_${currentDay}`;
+            const data = {};
+            data[currentDay] = exerciseData;
+            localStorage.setItem(dataKey, JSON.stringify(data));
+        }
+
+        function loadSavedData() {
+            if (!currentDay) return;
+            const dataKey = `gymRoutine_${currentDay}`;
+            const saved = localStorage.getItem(dataKey);
+
+            if (saved) {
+                const savedData = JSON.parse(saved);
+                if (savedData[currentDay]) {
+                    savedData[currentDay].forEach(savedItem => {
+                        const item = exerciseData.find(e => e.id === savedItem.id);
+                        if (item && !item.isMuscleGroup) {
+                            item.series = savedItem.series || 0;
+                            item.reps = savedItem.reps || 0;
+                            item.completed = savedItem.completed || false;
+                            item.notes = savedItem.notes || '';
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
