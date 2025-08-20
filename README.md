@@ -14,7 +14,7 @@ Una aplicación web simple y efectiva para hacer seguimiento de tus rutinas de g
 
 ## 🚀 Demo en Vivo
 
-Puedes probar la aplicación directamente [aquí](https://tu-usuario.github.io/rutini) *(actualiza con tu URL)*
+Puedes probar la aplicación directamente [aquí](https://vittoopugliese.github.io/rutini)
 
 ## 🛠️ Tecnologías
 
@@ -27,7 +27,7 @@ Puedes probar la aplicación directamente [aquí](https://tu-usuario.github.io/r
 
 1. **Clona el repositorio**:
    ```bash
-   git clone https://github.com/tu-usuario/rutini.git
+   git clone https://github.com/vittoopugliese/rutini.git
    cd rutini
    ```
 
@@ -145,13 +145,9 @@ background: linear-gradient(-90deg, #tu-color-1, #tu-color-2);
 - 🌙 Más temas de color
 - 📅 Planificador semanal
 
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ve el archivo [LICENSE](LICENSE) para más detalles.
-
 ## 👤 Autor
 
-**Tu Nombre** - [@tu-usuario](https://github.com/tu-usuario)
+**Vittorio** - [@vittoopugliese](https://github.com/vittoopugliese)
 
 ## 🙏 Reconocimientos
 
@@ -160,9 +156,3 @@ Este proyecto está bajo la Licencia MIT - ve el archivo [LICENSE](LICENSE) para
 - Gracias a la comunidad fitness por el feedback
 
 ---
-
-**¿Te gusta Rutini?** ⭐ ¡Dale una estrella al repo y compártelo con tus compañeros de gym!
-
-**¿Encontraste un bug?** 🐛 [Reporta un issue](https://github.com/tu-usuario/rutini/issues)
-
-**¿Tienes una idea?** 💡 [Inicia una discusión](https://github.com/tu-usuario/rutini/discussions)

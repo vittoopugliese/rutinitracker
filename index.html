@@ -4,8 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💪 Rutini</title>
+    <link rel="shortcut icon" href="https://www.svgrepo.com/show/241609/strongman.svg" type="image/x-icon">
+    <title>Rutini</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: Arial, sans-serif;
             max-width: 1400px;
@@ -27,14 +34,14 @@
 
         .header h1 {
             margin: 0;
-            font-size: 2em;
+            font-size: 2rem;
             font-weight: bold;
         }
 
         .header p {
             margin: 10px 0 0 0;
             font-size: 1.2em;
-            opacity: 0.9;
+            font-weight: bold;
         }
 
         .day-selector {
@@ -44,6 +51,7 @@
             margin-bottom: 20px;
             text-align: center;
             border: 1px solid #444;
+            font-size: .9rem;
         }
 
         .day-buttons {
@@ -54,13 +62,13 @@
         }
 
         .day-btn {
-            padding: 9px 12px;
+            padding: 8px;
             border: none;
             border-radius: 8px;
             background: #444;
             color: #fff;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1rem;
             font-weight: bold;
             transition: all 0.3s ease;
         }
@@ -89,19 +97,21 @@
 
         .stats {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             gap: 10px;
-            flex-wrap: wrap;
             margin-bottom: 15px;
+            flex-direction: row;
+            width: 100%;
         }
 
         .stat-item {
-            min-width: 70px;
             text-align: center;
             padding: 8px 12px;
             border-radius: 10px;
             border-left: 5px solid #ff6b35;
             background: #333;
+            width: 100%;
+            max-width: 120px;
         }
 
         .stat-number {
@@ -123,6 +133,7 @@
             border-radius: 10px;
             overflow: hidden;
             margin: 10px 0;
+            margin-top: 20px;
             border: 1px solid #666;
         }
 
@@ -174,10 +185,10 @@
             color: #ffffff;
             line-height: 1.4;
             text-align: left;
-            min-width: 100px;
+            min-width: 80px;
         }
 
-        .exercise-name div{
+        .exercise-name div {
             min-width: 180px;
         }
 
@@ -241,7 +252,7 @@
             transform: scale(1.2);
             accent-color: #ff6b35;
             position: relative;
-            right: 30px;
+            right: 8px;
         }
 
         .reset-btn {
@@ -260,19 +271,75 @@
             background: #c82333;
         }
 
+        .filter-container {
+            background: #2a2a2a;
+            padding: 15px 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            display: none;
+        }
+
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 6px;
+            background: #444;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(-90deg, #ff6b35, #f7931e);
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+
+        .filter-btn:hover {
+            background: #555;
+        }
+
+        .filter-btn.active:hover {
+            background: linear-gradient(-90deg, #f7931e, #ff6b35);
+        }
+
+        .hidden-by-filter {
+            display: none !important;
+        }
+
         @media (max-width: 768px) {
             .counter-controls {
                 flex-direction: column;
                 gap: 5px;
             }
 
+            .exercise-name div {
+                min-width: 180px;
+                padding-left: 6px !important;
+            }
+
+
             .notes-input {
                 width: 150px;
             }
 
-            th,
-            td {
-                padding: 8px 4px;
+            th, td {
+                padding: 6px 3px;
                 font-size: 0.9em;
             }
         }
@@ -282,11 +349,11 @@
 <body>
     <div class="header">
         <h1>💪 Rutini Tracker</h1>
-        <p>Contador de Series y Repeticiones</p>
+        <p>Contador Series y Reps</p>
     </div>
 
     <div class="day-selector">
-        <h3 style="margin: 12px auto;">Selecciona tu día de entrenamiento</h3>
+        <h3 style="margin: 12px auto;">Selecciona día de entrenamiento</h3>
         <div class="day-buttons">
             <button class="day-btn" onclick="selectDay('lunes')">🔥 LUN</button>
             <button class="day-btn" onclick="selectDay('miercoles')">💪 MIÉR</button>
@@ -317,13 +384,20 @@
         <button class="reset-btn" onclick="resetDay()">🔄 Resetear Día Actual</button>
     </div>
 
+    <div class="filter-container" id="filterContainer">
+        <div class="filter-title">Filtrar por músculo</div>
+        <div class="filter-buttons" id="filterButtons">
+            <button class="filter-btn active" onclick="filterByMuscle('todos')">Todos</button>
+        </div>
+    </div>
+
     <div class="table-container" id="tableContainer" style="display: none;">
         <table>
             <thead>
                 <tr>
                     <th>Ejercicio</th>
                     <th>Series</th>
-                    <th>Repeticiones</th>
+                    <th>Reps</th>
                     <th>✅</th>
                 </tr>
             </thead>
@@ -502,6 +576,7 @@
             initializeExercises();
             renderTable();
             updateStats();
+            initializeFilter();
         }
 
         function initializeExercises() {
@@ -549,48 +624,47 @@
                 const row = document.createElement('tr');
 
                 if (item.isMuscleGroup) {
-                    row.className = 'muscle-group';
-                    row.innerHTML = `
-                <td colspan="6">${item.muscle}</td>
-            `;
+                    // row.className = 'muscle-group';
+                    // row.innerHTML = `<td colspan="6">${item.muscle}</td>`;
                 } else {
                     row.className = item.completed ? 'completed-exercise' : '';
                     const descriptionId = `desc-${item.id}`;
 
                     row.innerHTML = `
-                <td class="exercise-name">
-                    <div>
-                        <span class="exercise-title" onclick="toggleDescription('${descriptionId}')" style="cursor: pointer; color: #ff6b35;">
-                            ${item.exercise} 📋
-                        </span>
-                        <div id="${descriptionId}" class="exercise-description" style="display: none; margin-top: 5px; padding: 8px; background: #333; border-radius: 4px; font-size: 0.9em; color: #ccc; border-left: 3px solid #ff6b35;">
-                            <b>${item.muscle.toUpperCase()}</b> - ${item.description}
+                    <td class="exercise-name">
+                        <div>
+                            <span class="exercise-title" onclick="toggleDescription('${descriptionId}')" style="cursor: pointer; color: #ff6b35;">
+                                ${item.exercise} 📋
+                            </span>
+                            <div id="${descriptionId}" class="exercise-description" style="display: none; margin-top: 5px; padding: 8px; background: #333; border-radius: 4px; font-size: 0.9em; color: #ccc; border-left: 3px solid #ff6b35;">
+                                <b>${item.muscle.toUpperCase()}</b> - ${item.description}
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="counter-controls">
-                        <button class="counter-btn" onclick="changeSeries('${item.id}', -1)">-</button>
-                        <span class="counter-display">${item.series}</span>
-                        <button class="counter-btn" onclick="changeSeries('${item.id}', 1)">+</button>
-                    </div>
-                </td>
-                <td>
-                    <div class="counter-controls">
-                        <button class="counter-btn" onclick="changeReps('${item.id}', -1)">-</button>
-                        <span class="counter-display">${item.reps}</span>
-                        <button class="counter-btn" onclick="changeReps('${item.id}', 1)">+</button>
-                    </div>
-                </td>
-                <td>
-                    <input type="checkbox" class="checkbox" 
-                           ${item.completed ? 'checked' : ''} 
-                           onchange="toggleCompleted('${item.id}')">
-                </td>
-            `;
-                }
+                    </td>
+                    <td>
+                        <div class="counter-controls">
+                            <button class="counter-btn" onclick="changeSeries('${item.id}', -1)">-</button>
+                            <span class="counter-display">${item.series}</span>
+                            <button class="counter-btn" onclick="changeSeries('${item.id}', 1)">+</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="counter-controls">
+                            <button class="counter-btn" onclick="changeReps('${item.id}', -1)">-</button>
+                            <span class="counter-display">${item.reps}</span>
+                            <button class="counter-btn" onclick="changeReps('${item.id}', 1)">+</button>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="checkbox" 
+                            ${item.completed ? 'checked' : ''} 
+                            onchange="toggleCompleted('${item.id}')">
+                    </td>
+                `;
 
-                tbody.appendChild(row);
+                    tbody.appendChild(row);
+                    applyFilter();
+                }
             });
         }
 
@@ -639,14 +713,11 @@
             document.getElementById('totalExercises').textContent = totalExercises;
             document.getElementById('completedExercises').textContent = completedExercises;
             document.getElementById('remainingExercises').textContent = remainingExercises;
-            document.getElementById('currentDay').textContent = currentDay.toUpperCase();
             document.getElementById('progressFill').style.width = progressPercentage + '%';
         }
 
         function resetDay() {
-            if (!currentDay || !confirm('¿Estás seguro de que quieres resetear todos los datos del día actual?')) {
-                return;
-            }
+            if (!currentDay || !confirm('¿Estás seguro de que quieres resetear todos los datos del día actual?')) return;
 
             exerciseData.forEach(item => {
                 if (!item.isMuscleGroup) {
@@ -660,6 +731,7 @@
             saveData();
             renderTable();
             updateStats();
+            initializeFilter();
         }
 
         function saveData() {
@@ -689,6 +761,93 @@
                     });
                 }
             }
+        }
+
+        let currentFilter = 'todos';
+        let availableMuscles = [];
+
+        function initializeFilter() {
+            if (!currentDay) return;
+
+            // Obtener músculos únicos del día actual
+            const uniqueMuscles = new Set();
+
+            exerciseData.forEach(item => {
+                if (!item.isMuscleGroup && item.muscle) {
+                    uniqueMuscles.add(item.muscle);
+                }
+            });
+
+            availableMuscles = ['todos', ...Array.from(uniqueMuscles).sort()];
+
+            // Renderizar botones de filtro
+            const filterButtons = document.getElementById('filterButtons');
+            filterButtons.innerHTML = '';
+
+            availableMuscles.forEach(muscle => {
+                const btn = document.createElement('button');
+                btn.className = muscle === 'todos' ? 'filter-btn active' : 'filter-btn';
+                btn.textContent = muscle === 'todos' ? 'Todos' : muscle;
+                btn.onclick = () => filterByMuscle(muscle);
+                filterButtons.appendChild(btn);
+            });
+
+            // Resetear filtro a 'todos'
+            currentFilter = 'todos';
+
+            // Mostrar contenedor de filtros
+            document.getElementById('filterContainer').style.display = 'block';
+        }
+
+        function filterByMuscle(muscle) {
+            currentFilter = muscle;
+
+            // Actualizar botones activos
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Aplicar filtro visual
+            applyFilter();
+        }
+
+        function applyFilter() {
+            const rows = document.querySelectorAll('#exerciseTableBody tr');
+
+            rows.forEach(row => {
+                const isMusclGroupRow = row.classList.contains('muscle-group');
+
+                if (currentFilter === 'todos') {
+                    row.classList.remove('hidden-by-filter');
+                } else if (isMusclGroupRow) {
+                    // Mostrar grupo muscular si tiene ejercicios del músculo filtrado
+                    const muscleGroupName = row.textContent.trim();
+                    const groupData = workoutData[currentDay].find(group => group.muscle === muscleGroupName);
+                    const hasMatchingExercises = groupData && groupData.exercises.some(ex => ex.muscle === currentFilter);
+
+                    if (hasMatchingExercises) {
+                        row.classList.remove('hidden-by-filter');
+                    } else {
+                        row.classList.add('hidden-by-filter');
+                    }
+                } else {
+                    // Para filas de ejercicio, buscar en exerciseData
+                    const exerciseTitle = row.querySelector('.exercise-title');
+                    if (exerciseTitle) {
+                        const exerciseName = exerciseTitle.textContent.replace(' 📋', '').trim();
+                        const exercise = exerciseData.find(item =>
+                            !item.isMuscleGroup && item.exercise === exerciseName
+                        );
+
+                        if (exercise && exercise.muscle === currentFilter) {
+                            row.classList.remove('hidden-by-filter');
+                        } else {
+                            row.classList.add('hidden-by-filter');
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>
